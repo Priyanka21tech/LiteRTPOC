@@ -72,7 +72,7 @@ export function createApp(root) {
         <h1>LiteRT.js Image Upscaling POC</h1>
         <p class="summary">
           Browser-side 4x image upscaling using LiteRT.js with GPU-first execution.
-          The current build uses an EDSR x4 LiteRT model for visibly sharper detail on small images while keeping the 128x128 to 512x512 tiled pipeline.
+          The current build uses a Real-ESRGAN x4 LiteRT model for visibly sharper detail on small images while keeping the 128x128 to 512x512 tiled pipeline.
         </p>
       </section>
 

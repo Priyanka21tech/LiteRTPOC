@@ -33,7 +33,9 @@ export function canvasToBlob(canvas, type = "image/png", quality = 0.92) {
 }
 
 export function tensorLayoutToNHWC(tensor, layout) {
-  if (layout === "nchw") {
+  const resolvedLayout = layout === "auto" ? inferTensorLayout(tensor.shape) : layout;
+
+  if (resolvedLayout === "nchw") {
     return tensor.transpose([0, 2, 3, 1]);
   }
 
@@ -48,19 +50,42 @@ export function tensorLayoutFromNHWC(tensor, layout) {
   return tensor;
 }
 
+function inferTensorLayout(shape) {
+  if (!shape || shape.length !== 4) {
+    return "nhwc";
+  }
+
+  const [, dim1, , dim3] = shape;
+
+  if (dim1 === 1 || dim1 === 3 || dim1 === 4) {
+    return "nchw";
+  }
+
+  if (dim3 === 1 || dim3 === 3 || dim3 === 4) {
+    return "nhwc";
+  }
+
+  return "nhwc";
+}
+
 export function resolveInputConfigFromModel(model, inputConfig, inputIndex = 0) {
   const details = model.getInputDetails?.()[inputIndex];
 
   if (!details?.shape || details.shape.length !== 4) {
-    return inputConfig;
+    return {
+      ...inputConfig,
+      layout: inputConfig.layout === "auto" ? "nhwc" : inputConfig.layout,
+    };
   }
 
   const shape = Array.from(details.shape);
   const [, dim1, dim2, dim3] = shape;
+  const layout = inputConfig.layout === "auto" ? inferTensorLayout(shape) : inputConfig.layout;
 
-  if (inputConfig.layout === "nchw") {
+  if (layout === "nchw") {
     return {
       ...inputConfig,
+      layout,
       channels: dim1 > 0 ? dim1 : inputConfig.channels,
       height: dim2 > 0 ? dim2 : inputConfig.height,
       width: dim3 > 0 ? dim3 : inputConfig.width,
@@ -69,6 +94,7 @@ export function resolveInputConfigFromModel(model, inputConfig, inputIndex = 0) 
 
   return {
     ...inputConfig,
+    layout,
     height: dim1 > 0 ? dim1 : inputConfig.height,
     width: dim2 > 0 ? dim2 : inputConfig.width,
     channels: dim3 > 0 ? dim3 : inputConfig.channels,

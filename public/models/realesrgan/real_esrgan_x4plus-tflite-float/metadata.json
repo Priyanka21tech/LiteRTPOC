@@ -1,0 +1,48 @@
+{
+    "model_id": "real_esrgan_x4plus",
+    "model_name": "Real-ESRGAN-x4plus",
+    "runtime": "tflite",
+    "precision": "float",
+    "tool_versions": {
+        "qairt": "2.45.0.260326154327",
+        "litert": "1.4.4"
+    },
+    "model_files": {
+        "real_esrgan_x4plus.tflite": {
+            "inputs": {
+                "image": {
+                    "shape": [
+                        1,
+                        128,
+                        128,
+                        3
+                    ],
+                    "dtype": "float32",
+                    "io_type": "image",
+                    "image_metadata": {},
+                    "value_range": [
+                        0.0,
+                        1.0
+                    ]
+                }
+            },
+            "outputs": {
+                "upscaled_image": {
+                    "shape": [
+                        1,
+                        512,
+                        512,
+                        3
+                    ],
+                    "dtype": "float32",
+                    "io_type": "image",
+                    "image_metadata": {},
+                    "value_range": [
+                        0.0,
+                        1.0
+                    ]
+                }
+            }
+        }
+    }
+}

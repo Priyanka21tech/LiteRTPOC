@@ -17,6 +17,11 @@ function isLikelyTfliteModel(bytes) {
   return signature === "TFL3";
 }
 
+function isLikelyHtmlResponse(bytes) {
+  const prefix = String.fromCharCode(...bytes.slice(0, 64)).trimStart().toLowerCase();
+  return prefix.startsWith("<!doctype html") || prefix.startsWith("<html");
+}
+
 async function fetchModelBytes(modelPath) {
   const response = await fetch(modelPath, { cache: "no-store" });
 
@@ -29,6 +34,12 @@ async function fetchModelBytes(modelPath) {
   const bytes = new Uint8Array(await response.arrayBuffer());
 
   if (!isLikelyTfliteModel(bytes)) {
+    if (isLikelyHtmlResponse(bytes)) {
+      throw new Error(
+        `Model file "${modelPath}" was not served as a .tflite file. Add a real TensorFlow Lite model at public${modelPath}, then restart or refresh the dev server.`,
+      );
+    }
+
     throw new Error(
       `Model file "${modelPath}" is not a valid TensorFlow Lite model. Make sure the file is a real .tflite artifact, not a placeholder or HTML response.`,
     );

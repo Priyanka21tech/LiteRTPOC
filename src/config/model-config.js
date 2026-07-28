@@ -1,18 +1,18 @@
 export const MODEL_CONFIG = {
   upscaling: {
     id: "upscaling",
-    label: "EDSR x4 Upscaling",
-    defaultModelPath: "/models/edsr.tflite",
+    label: "Real-ESRGAN x4 Upscaling",
+    defaultModelPath: "/models/realesrgan.tflite",
     accelerator: "webgpu",
     input: {
       width: 128,
       height: 128,
-      layout: "nchw",
+      layout: "auto",
       channels: 3,
       normalize: "zeroToOne",
     },
     output: {
-      layout: "nchw",
+      layout: "auto",
     },
     tiling: {
       inputTileSize: 128,

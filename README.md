@@ -3,7 +3,7 @@
 This project is a small browser-first foundation for PhotoIQ image tooling using
 official LiteRT.js APIs. It currently supports one image workflow:
 
-- 4x image upscaling with a tiled EDSR pipeline with GPU-first execution
+- 4x image upscaling with a tiled Real-ESRGAN pipeline with GPU-first execution
 
 The implementation is intentionally simple and extensible. The UI stays minimal,
 and the model-specific behavior lives in one configuration file so you can swap
@@ -59,7 +59,7 @@ Put your `.tflite` files in [public/models/README.md](public/models/README.md).
 
 Expected default file name:
 
-- `public/models/edsr.tflite`
+- `public/models/realesrgan.tflite`
 
 If your model uses different tensor shapes, layouts, normalization, or output
 semantics, update [src/config/model-config.js](src/config/model-config.js).
@@ -93,7 +93,7 @@ python .\tools\serve.py
 
 - Upload an image
 - Preview the original image
-- Run 4x upscaling with EDSR
+- Run 4x upscaling with Real-ESRGAN
 - Preview the processed image
 - Download the processed result
 - Display original and processed resolution
@@ -113,7 +113,7 @@ The app follows the same broad LiteRT.js flow documented by Google:
 Code structure:
 
 - [src/lib/litert-runtime.js](src/lib/litert-runtime.js): runtime initialization and compiled-model caching
-- [src/lib/pipelines/upscaling.js](src/lib/pipelines/upscaling.js): tiled EDSR upscaling pipeline
+- [src/lib/pipelines/upscaling.js](src/lib/pipelines/upscaling.js): tiled Real-ESRGAN upscaling pipeline
 - [src/config/model-config.js](src/config/model-config.js): one place for model shape/layout configuration
 - [src/app.js](src/app.js): simple browser UI wiring
 
@@ -128,7 +128,7 @@ This POC assumes:
 The exact input/output tensor layout varies by model. This is why
 [src/config/model-config.js](src/config/model-config.js) exists. Adjust:
 
-- `layout`: `nhwc` or `nchw`
+- `layout`: `auto`, `nhwc`, or `nchw`
 - `width` and `height`
 - `normalize`: `zeroToOne` or `minusOneToOne`
 - output thresholding or scale metadata

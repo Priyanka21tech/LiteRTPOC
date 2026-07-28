@@ -71,7 +71,7 @@ async function upscaleTile(tileCanvas, model, modelConfig) {
     const outputs = await runWithTfjsTensors(model, [inputTensor]);
 
     if (!outputs.length) {
-      throw new Error("The EDSR upscaling model did not return any output tensors.");
+      throw new Error(`${modelConfig.label} did not return any output tensors.`);
     }
 
     const tileTensor = tf.tidy(() => {
