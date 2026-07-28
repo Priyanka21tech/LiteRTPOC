@@ -1,0 +1,24 @@
+{
+  "name": "imagepoc",
+  "version": "1.0.0",
+  "description": "LiteRT.js browser image processing proof of concept",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "postinstall": "node scripts/copy-litert-wasm.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@litertjs/core": "^2.5.0",
+    "@litertjs/tfjs-interop": "^2.5.0",
+    "@tensorflow/tfjs": "^4.22.0",
+    "@tensorflow/tfjs-backend-webgpu": "^4.22.0"
+  },
+  "devDependencies": {
+    "vite": "^7.0.6"
+  }
+}

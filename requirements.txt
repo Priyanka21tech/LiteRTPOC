@@ -1,0 +1,2 @@
+# No third-party Python packages are required right now.
+# The project uses a Python virtual environment only to isolate local tooling.
